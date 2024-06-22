@@ -20,24 +20,24 @@ void klog_message(klog_level level, const char * filename, int line, const char 
     switch (level)
     {
     case DEBUG:
-        level_str = "DEBUG";
+        level_str = "DEBUG  ";
         break;
     case INFO:
-        level_str = "INFO";
+        level_str = "INFO   ";
         break;
     case WARNING:
         level_str = "WARNING";
         break;
     case ERROR:
-        level_str = "ERROR";
+        level_str = "ERROR  ";
         break;
     case FATAL:
-        level_str = "FATAL";
+        level_str = "FATAL  ";
         break;
     default:
         level_str = "UNKNOWN";
         break;
     }
 
-    fprintf(stderr, "%s %s %s\t%s:%d %s\n", (KLOG_TAG == NULL ? "KLOG" : KLOG_TAG), time_str, level_str, filename, line, buffer);
+    fprintf(stderr, "%s %s %s %s:%d %s\n", (KLOG_TAG == NULL ? "KLOG" : KLOG_TAG), time_str, level_str, filename, line, buffer);
 }
