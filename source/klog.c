@@ -1,5 +1,7 @@
 #include "klog.h"
 
+pthread_mutex_t message_mutex_lock = PTHREAD_MUTEX_INITIALIZER;
+
 char * KLOG_TAG;
 
 void klog_message(klog_level level, const char * filename, int line, const char * format, ...)
@@ -9,6 +11,8 @@ void klog_message(klog_level level, const char * filename, int line, const char 
     char buffer[1024];
     vsnprintf(buffer, sizeof(buffer), format, args);
     va_end(args);
+
+    pthread_mutex_lock(&message_mutex_lock);
 
     time_t current_time = time(NULL);
     struct tm * tm_info = localtime(&current_time);
@@ -40,4 +44,6 @@ void klog_message(klog_level level, const char * filename, int line, const char 
     }
 
     fprintf(stderr, "%s %s %s %s:%d %s\n", (KLOG_TAG == NULL ? "KLOG" : KLOG_TAG), time_str, level_str, filename, line, buffer);
+
+    pthread_mutex_unlock(&message_mutex_lock);
 }
